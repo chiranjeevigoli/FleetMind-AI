@@ -1,0 +1,226 @@
+/* ---------------- Background ---------------- */
+
+.main {
+    background-color: #f5f7fb;
+}
+
+/* ---------------- Title ---------------- */
+
+h1 {
+    color: #0F62FE;
+    font-weight: 800;
+}
+
+/* ---------------- Buttons ---------------- */
+
+.stButton > button {
+    width: 100%;
+    border-radius: 12px;
+    height: 55px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(90deg,#0F62FE,#3B82F6);
+    color: white;
+    border: none;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(90deg,#0053D6,#2563EB);
+}
+
+/* ---------------- Text Input ---------------- */
+
+.stTextInput input {
+
+    border-radius: 12px;
+
+    border:2px solid #0F62FE;
+
+    padding:12px;
+
+}
+
+/* ---------------- Sidebar ---------------- */
+
+section[data-testid="stSidebar"]{
+
+    background:#13294B;
+
+    color:white;
+
+}
+
+section[data-testid="stSidebar"] *{
+
+    color:white;
+
+}
+
+/* ---------------- Metric Cards ---------------- */
+
+div[data-testid="metric-container"]{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    box-shadow:0px 4px 12px rgba(0,0,0,0.12);
+
+}
+
+/* ---------------- Hero Card ---------------- */
+
+/* ---------------- Hero Card ---------------- */
+
+.hero-card{
+
+    background:linear-gradient(135deg,#0F62FE,#2563EB);
+
+    padding:50px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+
+    margin-bottom:25px;
+
+}
+
+.hero-card h1{
+
+    color:white !important;
+
+    font-size:55px;
+
+    margin-bottom:15px;
+
+}
+
+.hero-card h3{
+
+    color:white !important;
+
+    font-weight:500;
+
+    margin-bottom:20px;
+
+}
+
+.hero-card p{
+
+    color:white;
+
+    font-size:20px;
+
+    max-width:850px;
+
+    margin:auto;
+
+    line-height:1.8;
+
+}
+
+/* ---------------- Answer Card ---------------- */
+
+.answer-card{
+
+    background:rgb(0, 0, 0);
+
+    padding:30px;
+
+    border-radius:18px;
+
+    border-left:8px solid #0F62FE;
+
+    box-shadow:0px 8px 20px rgba(0,0,0,.10);
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    margin-top:20px;
+
+}
+
+/* ---------------- Source Card ---------------- */
+
+.source-card{
+
+    background:black;
+
+    padding:22px;
+
+    border-radius:15px;
+
+    margin-top:18px;
+
+    border-left:6px solid #2563EB;
+
+    box-shadow:0px 5px 15px rgba(0,0,0,.08);
+
+    line-height:1.7;
+
+}
+
+/* ---------------- Upload Panel ---------------- */
+
+/* Hint box shown when no files are selected */
+.upload-hint {
+    background: rgba(15, 98, 254, 0.10);
+    border: 1.5px dashed #3B82F6;
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+    color: #93c5fd;
+    font-size: 13px;
+    margin-top: 8px;
+    line-height: 1.6;
+}
+
+/* File uploader widget inside sidebar */
+section[data-testid="stSidebar"] .stFileUploader {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+section[data-testid="stSidebar"] .stFileUploader label {
+    color: #93c5fd !important;
+    font-size: 13px;
+}
+
+/* Index Documents button in sidebar */
+section[data-testid="stSidebar"] .stButton > button {
+    background: linear-gradient(90deg, #1d4ed8, #3b82f6) !important;
+    border-radius: 10px !important;
+    height: 42px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    margin-top: 6px;
+    transition: opacity 0.2s ease;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover {
+    opacity: 0.88;
+}
+
+/* Progress bars inside sidebar */
+section[data-testid="stSidebar"] .stProgress > div > div {
+    background: linear-gradient(90deg, #0F62FE, #60a5fa) !important;
+    border-radius: 8px;
+}
+
+/* Success / warning / error inside sidebar */
+section[data-testid="stSidebar"] .stSuccess,
+section[data-testid="stSidebar"] .stWarning,
+section[data-testid="stSidebar"] .stError {
+    border-radius: 10px;
+    font-size: 13px;
+}
