@@ -1,2 +1,3 @@
-libgl1
-libglib2.0-0
+# No system packages required.
+# PyMuPDF 1.24+ ships self-contained wheels with bundled MuPDF —
+# no libgl1 or libglib2.0-0 needed.
