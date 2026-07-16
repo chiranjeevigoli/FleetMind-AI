@@ -177,9 +177,7 @@ Type any maintenance question in the chat input:
 
 ---
 
-## 📄 License
-
-MIT License — feel free to use and adapt this project.
+Feel free to use and adapt this project.
 
 ---
 
