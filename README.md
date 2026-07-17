@@ -13,6 +13,7 @@ FleetMind AI is a Retrieval-Augmented Generation (RAG) chatbot that lets mainten
 
 ## ✨ Features
 
+- 🤖 **Interactive RAG Agent** — Evaluates retrieval confidence dynamically. Halts response generation and queries the user for missing info if context is insufficient (safety-first design).
 - 🔍 **Semantic Search** — Find answers across hundreds of pages using vector similarity, not keywords
 - 🤖 **Gemini-Powered Answers** — Context-grounded responses using Google's Gemini LLM
 - 📂 **Upload Documents** — Add new PDF manuals at runtime; they are instantly indexed and searchable
@@ -25,19 +26,27 @@ FleetMind AI is a Retrieval-Augmented Generation (RAG) chatbot that lets mainten
 ## 🏗 Architecture
 
 ```
-User Question
-     │
-     ▼
+          User Question
+               │
+               ▼
 Sentence Transformer (all-MiniLM-L6-v2)
-     │  embed query
-     ▼
-ChromaDB Vector Store
-     │  top-5 relevant chunks
-     ▼
-Google Gemini (gemini-3.5-flash)
-     │  context-grounded generation
-     ▼
-Answer + Source Citations
+               │  embed query
+               ▼
+     ChromaDB Vector Store
+               │  get retrieved chunks & L2 distances
+               ▼
+ ┌───────────────────────────┐
+ │ Confidence Router Agent   │
+ │   (Threshold L2 <= 1.20)  │
+ └─────────────┬─────────────┘
+               │
+       ┌───────┴───────────────────────┐
+       │ (<= 1.20)                     │ (> 1.20)
+       ▼                               ▼
+Google Gemini (gemini-3.5-flash)    Halt Generation & Ask User
+       │                               │
+       ▼                               ▼
+Answer + Source Citations           Clarification Card (UI)
 ```
 
 ---

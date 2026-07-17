@@ -223,4 +223,33 @@ section[data-testid="stSidebar"] .stWarning,
 section[data-testid="stSidebar"] .stError {
     border-radius: 10px;
     font-size: 13px;
-}
+}
+
+/* ---------------- Clarification Card ---------------- */
+
+.clarification-card {
+    background: rgba(245, 158, 11, 0.05);
+    padding: 30px;
+    border-radius: 18px;
+    border: 1px solid rgba(245, 158, 11, 0.15);
+    border-left: 8px solid #F59E0B;
+    box-shadow: 0px 8px 25px rgba(245, 158, 11, 0.08);
+    font-size: 18px;
+    line-height: 1.8;
+    margin-top: 20px;
+    color: #1e293b;
+}
+
+/* Support dark/light contrast styling for content inside clarification card */
+.clarification-card h4 {
+    color: #d97706 !important;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.clarification-card p, .clarification-card li {
+    color: #334155;
+    margin-bottom: 8px;
+}
+

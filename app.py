@@ -3,7 +3,7 @@ from src.llm import generate_answer
 from src.vector_store import get_collection_stats
 
 from components.hero import show_hero
-from components.answer_card import show_answer
+from components.answer_card import show_answer, show_clarification
 from components.source_cards import show_sources
 from components.upload_panel import show_upload_panel
 
@@ -103,7 +103,10 @@ for message in st.session_state.messages:
 
         if message["role"] == "assistant":
 
-            show_answer(message["content"])
+            if message.get("is_clarification", False):
+                show_clarification(message["content"])
+            else:
+                show_answer(message["content"])
 
         else:
 
@@ -136,14 +139,41 @@ if question:
 
         retrieved = retrieve(question)
 
-        answer = generate_answer(question, retrieved)
+        # Confidence Evaluation & Routing Decision
+        # L2 Distance Threshold: 1.20
+        CONFIDENCE_THRESHOLD = 1.20
+        is_clarification = False
+
+        if not retrieved:
+            is_clarification = True
+            answer = (
+                "#### 🔍 No reference manuals are currently indexed/loaded.\n\n"
+                "Please upload the relevant vehicle maintenance PDF manuals in the sidebar and index them before asking questions."
+            )
+        else:
+            # Check the closest match distance (lower L2 distance = closer match)
+            best_distance = retrieved[0]["distance"]
+            if best_distance > CONFIDENCE_THRESHOLD:
+                is_clarification = True
+                answer = (
+                    f"#### ⚠️ Low Retrieval Confidence ({best_distance:.3f} > {CONFIDENCE_THRESHOLD})\n\n"
+                    "I could not locate highly relevant information in the manuals to answer your question safely. "
+                    "To prevent generating unreliable or potentially dangerous vehicle maintenance instructions, "
+                    "please specify your query with additional context, such as:\n"
+                    "- **Truck Model / Engine Type** (e.g., Komatsu HD325, Freightliner)\n"
+                    "- **Specific Subsystem** (e.g., front disc brakes, hydraulic cylinder, oil filter)\n"
+                    "- **Operational Symptom or specific manual section**"
+                )
+            else:
+                answer = generate_answer(question, retrieved)
 
     # Store
 
     st.session_state.messages.append(
         {
             "role": "assistant",
-            "content": answer
+            "content": answer,
+            "is_clarification": is_clarification
         }
     )
 
@@ -152,7 +182,10 @@ if question:
     # Display Answer
 
     with st.chat_message("assistant"):
-        show_answer(answer)
+        if is_clarification:
+            show_clarification(answer)
+        else:
+            show_answer(answer)
 
     # Display Sources
     with st.expander("📄 View Retrieved Sources"):

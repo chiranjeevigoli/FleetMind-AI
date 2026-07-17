@@ -4,14 +4,30 @@ from dotenv import load_dotenv
 from google import genai
 
 # Load environment variables (works locally)
-load_dotenv()
+load_dotenv(override=True)
 
 # Read API key — Streamlit Cloud secrets take priority, .env used locally
 def _get_api_key():
+    # 1. Try reading directly from local .env to bypass Streamlit's environment injection
     try:
-        return st.secrets["GOOGLE_API_KEY"]
+        import dotenv
+        env_vals = dotenv.dotenv_values(".env")
+        key = env_vals.get("GOOGLE_API_KEY")
+        if key and not key.startswith("your-"):
+            return key
     except Exception:
-        return os.getenv("GOOGLE_API_KEY")
+        pass
+
+    # 2. Fall back to Streamlit secrets (e.g., in Streamlit Cloud)
+    try:
+        key = st.secrets["GOOGLE_API_KEY"]
+        if key and not key.startswith("your-"):
+            return key
+    except Exception:
+        pass
+
+    # 3. Fall back to standard environment variable
+    return os.getenv("GOOGLE_API_KEY")
 
 # Initialize Gemini Client
 client = genai.Client(
