@@ -156,7 +156,7 @@ if question:
             if best_distance > CONFIDENCE_THRESHOLD:
                 is_clarification = True
                 answer = (
-                    f"#### ⚠️ Low Retrieval Confidence\n\n"
+                    f"#### ⚠️Sorry! I couldn't answer this question.\n\n"
                     "I could not locate highly relevant information in the manuals to answer your question safely. "
                     "To prevent generating unreliable or potentially dangerous vehicle maintenance instructions, "
                     "please specify your query with additional context, such as:\n"
