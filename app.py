@@ -3,7 +3,7 @@ from src.llm import generate_answer
 from src.vector_store import get_collection_stats
 
 from components.hero import show_hero
-from components.answer_card import show_answer, show_clarification
+from components.answer_card import show_answer, show_clarification, show_sidebar_logo
 from components.source_cards import show_sources
 from components.upload_panel import show_upload_panel
 
@@ -60,28 +60,53 @@ kb = st.session_state.kb_stats
 
 with st.sidebar:
 
-    st.title("🚛 FleetMind AI")
+    # Branded logo + title
+    show_sidebar_logo()
 
-    st.markdown("---")
+    st.markdown("<div class='sidebar-divider'></div>", unsafe_allow_html=True)
 
-    st.subheader("Knowledge Base")
+    # ── Knowledge Base Stats ──────────────────────────────────────
+    st.markdown(
+        "<div class='sidebar-section-title'>📊 Knowledge Base</div>",
+        unsafe_allow_html=True
+    )
 
-    st.success(f"📚 Manuals Loaded : {kb['unique_sources']}")
+    st.markdown(
+        f"""
+        <div class="sidebar-stat-grid">
+            <div class="sidebar-stat-card">
+                <div class="sidebar-stat-value">{kb['unique_sources']}</div>
+                <div class="sidebar-stat-label">📚 Manuals</div>
+            </div>
+            <div class="sidebar-stat-card">
+                <div class="sidebar-stat-value">{kb['total_chunks']}</div>
+                <div class="sidebar-stat-label">🧩 Chunks</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    st.info(f"🧩 Indexed Chunks : {kb['total_chunks']}")
+    st.markdown(
+        """
+        <div class="sidebar-info-list">
+            <div class="sidebar-info-item">🗄 <span>Vector DB</span><strong>ChromaDB</strong></div>
+            <div class="sidebar-info-item">🧠 <span>Embedding</span><strong>MiniLM-L6-v2</strong></div>
+            <div class="sidebar-info-item">🤖 <span>LLM</span><strong>Gemini</strong></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    st.info("🗄 Vector Database : ChromaDB")
-
-    st.info("🧠 Embedding : all-MiniLM-L6-v2")
-
-    st.info("🤖 LLM : Gemini")
-
-    # ── Upload Documents Panel ──────────────────────────────────
+    # ── Upload Documents Panel ──────────────────────────────────────
     show_upload_panel()
 
-    st.markdown("---")
+    st.markdown("<div class='sidebar-divider'></div>", unsafe_allow_html=True)
 
-    st.caption("Version 1.1")
+    st.markdown(
+        "<div style='text-align:center; font-size:11px; color:#4a6fa5; padding-top:4px;'>FleetMind AI · Version 1.1</div>",
+        unsafe_allow_html=True
+    )
 
 
 # --------------------------------------------------
@@ -117,7 +142,7 @@ for message in st.session_state.messages:
 # Chat Input
 # --------------------------------------------------
 
-question = st.chat_input("Ask a maintenance question...")
+question = st.chat_input("🔧 Ask a maintenance question about your fleet...")
 
 if question:
 
@@ -135,7 +160,7 @@ if question:
 
     # Retrieve + Generate
 
-    with st.spinner("Searching manuals..."):
+    with st.spinner("🔍 Searching manuals..."):
 
         retrieved = retrieve(question)
 
@@ -197,16 +222,23 @@ if question:
 
 st.markdown("---")
 
+st.markdown(
+    """
+    <div class="metrics-label">📈 Live Knowledge Base Metrics</div>
+    """,
+    unsafe_allow_html=True,
+)
+
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
-    st.metric("Manuals", kb["unique_sources"])
+    st.metric("📚 Manuals", kb["unique_sources"])
 
 with col2:
-    st.metric("Chunks", kb["total_chunks"])
+    st.metric("🧩 Chunks", kb["total_chunks"])
 
 with col3:
-    st.metric("Vector DB", "ChromaDB")
+    st.metric("🗄 Vector DB", "ChromaDB")
 
 with col4:
-    st.metric("Model", "MiniLM-L6")
+    st.metric("🧠 Model", "MiniLM-L6")
