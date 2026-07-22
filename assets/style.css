@@ -4,10 +4,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* ── Global Reset ─────────────────────────────────────────── */
-
-* {
+/* Apply Inter font at the app root so it inherits, without breaking Material Icon ligatures */
+html, body, [class*="stApp"] {
     font-family: 'Inter', sans-serif !important;
+}
+
+/* Enforce Inter on our custom components */
+.hero-wrapper, .answer-card, .source-card, .clarification-card, 
+.sidebar-logo-wrap, .sidebar-stat-grid, .sidebar-info-list, .upload-hint {
+    font-family: 'Inter', sans-serif;
 }
 
 /* ── Main Background ──────────────────────────────────────── */
