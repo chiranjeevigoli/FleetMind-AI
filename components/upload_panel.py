@@ -5,13 +5,7 @@ Sidebar widget for uploading, indexing, and tracking PDF documents.
 """
 
 import streamlit as st
-import sys
-import os
-
-# Ensure src/ is importable when called from the app root
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-
-from uploader import index_uploaded_file, get_kb_stats
+from src.uploader import index_uploaded_file, get_kb_stats
 
 
 def show_upload_panel():
@@ -29,6 +23,21 @@ def show_upload_panel():
         "Add new PDF manuals to the knowledge base.</p>",
         unsafe_allow_html=True
     )
+
+    # ── Display Upload Results from Previous Run ────────────────
+    if "upload_results" in st.session_state:
+        st.markdown("#### 📊 Indexing Summary")
+        for r in st.session_state["upload_results"]:
+            if r["skipped"]:
+                st.warning(f"⚠️ **{r['filename']}** — already indexed, skipped.")
+            elif r["error"]:
+                st.error(f"❌ **{r['filename']}** — {r['error']}")
+            else:
+                st.success(
+                    f"✅ **{r['filename']}** — "
+                    f"{r['pages']} pages · {r['chunks']} chunks added"
+                )
+        del st.session_state["upload_results"]
 
     # ── File uploader ───────────────────────────────────────────
     uploaded_files = st.file_uploader(
@@ -93,24 +102,10 @@ def _run_indexing(uploaded_files):
             text=f"Processed {file_idx + 1}/{total} file(s)…"
         )
 
-    # ── Summary ─────────────────────────────────────────────────
-    status_area.empty()
-    overall_bar.empty()
-
-    st.markdown("#### 📊 Indexing Summary")
-
-    for r in results_log:
-        if r["skipped"]:
-            st.warning(f"⚠️ **{r['filename']}** — already indexed, skipped.")
-        elif r["error"]:
-            st.error(f"❌ **{r['filename']}** — {r['error']}")
-        else:
-            st.success(
-                f"✅ **{r['filename']}** — "
-                f"{r['pages']} pages · {r['chunks']} chunks added"
-            )
-
     # ── Refresh live KB stats ────────────────────────────────────
     stats = get_kb_stats()
     st.session_state["kb_stats"] = stats
+    
+    # Store results to show them after rerun
+    st.session_state["upload_results"] = results_log
     st.rerun()
